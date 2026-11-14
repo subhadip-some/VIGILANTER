@@ -38,21 +38,11 @@ Vigilanter is a lightweight news intelligence dashboard that monitors Indian new
 
 ## Run the app
 
-1. Fetch the latest feed data:
+Run the app from the project folder:
    ```bash
    python app.py
    ```
-   This updates `news.json` with the current headlines from the configured feeds.
-
-2. Serve the site locally:
-   ```bash
-   python -m http.server 8000
-   ```
-
-3. Open the dashboard in your browser:
-   ```text
-   http://localhost:8000
-   ```
+   This updates `news.json`, starts the local web server, and opens the dashboard at `http://localhost:8000`. Press `Ctrl+C` in the terminal to stop the server.
 
 ## Notes
 

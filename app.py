@@ -1,6 +1,9 @@
 import feedparser
 import json
 import os
+import webbrowser
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 rss_feeds = {
     'The_Hindu': 'https://www.thehindu.com/news/national/feeder/default.rss',
@@ -32,12 +35,12 @@ def parse_feed(url, source_name):
             })
 
         print(f"Fetched {len(raw_entries)} articles.")
-        print("open in  : http://localhost:8000")
         return raw_entries
 
     except Exception as e:
         print("An error occurred while fetching the feed.")
         print(e)
+        return []
 
 
 
@@ -54,3 +57,18 @@ if __name__ == "__main__":
 
     print(f"\nTotal articles saved: {len(all_articles)}")
     print(f"JSON file updated: {JSON_FILE}")
+
+    url = "http://localhost:8000"
+    handler = partial(
+        SimpleHTTPRequestHandler,
+        directory=os.path.dirname(os.path.abspath(__file__)),
+    )
+
+    with ThreadingHTTPServer(("127.0.0.1", 8000), handler) as server:
+        print(f"Opening dashboard at {url}")
+        if not webbrowser.open(url):
+            print(f"Open this URL in your browser: {url}")
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            print("\nServer stopped.")
